@@ -1,0 +1,707 @@
+:root {
+  --bg-primary: #F2F2F7;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #E5E5EA;
+  --text-primary: #000000;
+  --text-secondary: #8E8E93;
+  --text-tertiary: #C7C7CC;
+  
+  --ios-blue: #007AFF;
+  --ios-indigo: #5856D6;
+  --ios-purple: #AF52DE;
+  --ios-pink: #FF2D55;
+  --ios-red: #FF3B30;
+  --ios-orange: #FF9500;
+  --ios-yellow: #FFCC00;
+  --ios-green: #34C759;
+  --ios-mint: #00C7BE;
+  --ios-teal: #30B0C7;
+  --ios-cyan: #32ADE6;
+
+  --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --modal-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --border-subtle: rgba(60, 60, 67, 0.1);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  --safe-top: env(safe-area-inset-top, 20px);
+  --safe-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #000000;
+    --bg-secondary: #1C1C1E;
+    --bg-tertiary: #2C2C2E;
+    --text-primary: #FFFFFF;
+    --text-secondary: #8E8E93;
+    --text-tertiary: #48484A;
+
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    --glass-bg: rgba(28, 28, 30, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --border-subtle: rgba(255, 255, 255, 0.12);
+  }
+}
+
+[data-theme="light"] {
+  --bg-primary: #F2F2F7;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #E5E5EA;
+  --text-primary: #000000;
+  --text-secondary: #8E8E93;
+  --text-tertiary: #C7C7CC;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --border-subtle: rgba(60, 60, 67, 0.1);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #000000;
+  --bg-secondary: #1C1C1E;
+  --bg-tertiary: #2C2C2E;
+  --text-primary: #FFFFFF;
+  --text-secondary: #8E8E93;
+  --text-tertiary: #48484A;
+  --glass-bg: rgba(28, 28, 30, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Приложение и контейнер */
+#app {
+  width: 100%;
+  max-width: 580px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--bg-primary);
+  padding-bottom: calc(75px + var(--safe-bottom));
+}
+
+@media (min-width: 860px) {
+  #app {
+    max-width: 900px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Верхняя статусная панель в стиле iOS */
+.ios-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding-top: max(var(--safe-top), 16px);
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 12px;
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  background-color: var(--glass-bg);
+  border-bottom: 0.5px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+}
+
+.header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-logo-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #007AFF, #5856D6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(88, 86, 214, 0.3);
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 149, 0, 0.12);
+  color: var(--ios-orange);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 149, 0, 0.25);
+  animation: pulseStreak 2s infinite ease-in-out;
+}
+
+@keyframes pulseStreak {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+/* Контент страниц */
+.screen-container {
+  flex: 1;
+  padding: 16px 20px;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Нижняя панель навигации (iOS Tab Bar) */
+.ios-tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 580px;
+  z-index: 100;
+  padding-bottom: max(var(--safe-bottom), 12px);
+  padding-top: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  background-color: var(--glass-bg);
+  border-top: 0.5px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .ios-tab-bar {
+    max-width: 680px;
+    border-radius: var(--radius-lg);
+    bottom: 16px;
+    box-shadow: var(--modal-shadow);
+    border: 1px solid var(--border-subtle);
+  }
+}
+
+.tab-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.tab-btn .tab-icon {
+  font-size: 22px;
+  line-height: 1;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tab-btn.active {
+  color: var(--ios-blue);
+}
+
+.tab-btn.active .tab-icon {
+  transform: scale(1.15);
+}
+
+.tab-badge {
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  background-color: var(--ios-red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+}
+
+/* Карточки и блоки */
+.ios-card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--card-shadow);
+  border: 0.5px solid var(--border-subtle);
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 3D Карточка изучения (Flashcard Flip) */
+.flip-card-perspective {
+  perspective: 1200px;
+  width: 100%;
+  min-height: 380px;
+  margin: 16px 0;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  min-height: 380px;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.flip-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  min-height: 380px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--bg-secondary);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-subtle);
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+  text-align: left;
+  overflow-y: auto;
+}
+
+.card-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.card-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.card-word-title {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin: 20px 0 8px 0;
+  color: var(--text-primary);
+}
+
+.card-pos {
+  font-size: 15px;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.card-sound-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 122, 255, 0.1);
+  color: var(--ios-blue);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.card-sound-btn:active {
+  transform: scale(0.9);
+}
+
+.tap-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Оценка карточки (SM-2 / Spaced Repetition Buttons) */
+.rating-buttons-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.rate-btn {
+  border: none;
+  padding: 12px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.rate-btn:active {
+  transform: scale(0.95);
+  opacity: 0.85;
+}
+
+.rate-again {
+  background: rgba(255, 59, 48, 0.12);
+  color: var(--ios-red);
+}
+
+.rate-hard {
+  background: rgba(255, 149, 0, 0.12);
+  color: var(--ios-orange);
+}
+
+.rate-good {
+  background: rgba(0, 122, 255, 0.12);
+  color: var(--ios-blue);
+}
+
+.rate-master {
+  background: rgba(52, 199, 89, 0.15);
+  color: var(--ios-green);
+}
+
+/* Кнопки в стиле iOS */
+.ios-btn-primary {
+  width: 100%;
+  background: var(--ios-blue);
+  color: #fff;
+  border: none;
+  padding: 15px 20px;
+  border-radius: var(--radius-md);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 122, 255, 0.3);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.ios-btn-primary:active {
+  transform: scale(0.98);
+  filter: brightness(0.95);
+}
+
+.ios-btn-secondary {
+  width: 100%;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: none;
+  padding: 13px 18px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s ease;
+}
+
+.ios-btn-secondary:active {
+  transform: scale(0.98);
+}
+
+/* Викторины и дуэли: варианты ответа */
+.quiz-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.quiz-option-btn {
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-subtle);
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quiz-option-btn:active {
+  transform: scale(0.98);
+}
+
+.quiz-option-btn.correct {
+  background: rgba(52, 199, 89, 0.15) !important;
+  border-color: var(--ios-green) !important;
+  color: var(--ios-green) !important;
+  font-weight: 600;
+}
+
+.quiz-option-btn.wrong {
+  background: rgba(255, 59, 48, 0.15) !important;
+  border-color: var(--ios-red) !important;
+  color: var(--ios-red) !important;
+}
+
+/* Экран Дуэли (Борьба подруг) */
+.duel-versus-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(88, 86, 214, 0.12), rgba(0, 122, 255, 0.12));
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(88, 86, 214, 0.2);
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-avatar {
+  font-size: 28px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.player-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.player-score {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ios-indigo);
+}
+
+.versus-badge {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+/* Модальные окна */
+.ios-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+@media (min-width: 600px) {
+  .ios-modal-backdrop {
+    align-items: center;
+    padding: 20px;
+  }
+}
+
+.ios-modal-sheet {
+  background: var(--bg-secondary);
+  width: 100%;
+  max-width: 520px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 24px 20px calc(20px + var(--safe-bottom)) 20px;
+  box-shadow: var(--modal-shadow);
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 600px) {
+  .ios-modal-sheet {
+    border-radius: var(--radius-lg);
+    padding-bottom: 24px;
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-grabber {
+  width: 40px;
+  height: 5px;
+  background: var(--text-tertiary);
+  border-radius: var(--radius-full);
+  margin: -8px auto 16px auto;
+}
+
+/* Поля ввода в стиле iOS */
+.ios-input-group {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ios-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ios-input, .ios-textarea {
+  background: var(--bg-tertiary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 16px;
+  color: var(--text-primary);
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.ios-input:focus, .ios-textarea:focus {
+  border-color: var(--ios-blue);
+  background: var(--bg-secondary);
+}
+
+/* Категории фильтра */
+.category-pills-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+  scrollbar-width: none;
+}
+
+.category-pills-row::-webkit-scrollbar {
+  display: none;
+}
+
+.pill-btn {
+  white-space: nowrap;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+  border: 0.5px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.pill-btn.active {
+  background: var(--ios-blue);
+  color: #fff;
+  border-color: var(--ios-blue);
+}
+
+/* Цитаты и примеры */
+.quote-box {
+  background: var(--bg-tertiary);
+  border-left: 3px solid var(--ios-indigo);
+  padding: 12px 14px;
+  border-radius: 4px var(--radius-sm) var(--radius-sm) 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 12px 0;
+  font-style: italic;
+}
+
+.active-tip-box {
+  background: rgba(52, 199, 89, 0.1);
+  border: 1px dashed var(--ios-green);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 13px;
+  margin-top: 12px;
+  color: var(--text-primary);
+}
